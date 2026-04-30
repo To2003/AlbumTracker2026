@@ -32,12 +32,16 @@ export function CalculatorDialog({ stats }: CalculatorDialogProps) {
     // Stickers per pack
     const stickersPerPack = ALBUM_CONFIG.stickersPerPack;
     
+    const calculateExpectedStickers = (currentOwned: number, targetTotal: number) => {
+      let expected = 0;
+      for (let i = currentOwned; i < targetTotal; i++) {
+        expected += targetTotal / (targetTotal - i);
+      }
+      return expected;
+    };
+
     // Calculate expected packs needed without trading
-    let expectedStickersNeeded = 0;
-    for (let i = owned; i < total; i++) {
-      const probNew = (total - i) / total;
-      expectedStickersNeeded += 1 / probNew;
-    }
+    const expectedStickersNeeded = calculateExpectedStickers(owned, total);
     const packsWithoutTrading = Math.ceil(expectedStickersNeeded / stickersPerPack);
     
     // Calculate with trading (simplified model)
@@ -45,12 +49,8 @@ export function CalculatorDialog({ stats }: CalculatorDialogProps) {
     const effectiveMissing = Math.max(0, missing - tradableStickers);
     
     // Recalculate for effective missing
-    let effectiveStickersNeeded = 0;
     const effectiveOwned = total - effectiveMissing;
-    for (let i = effectiveOwned; i < total; i++) {
-      const probNew = (total - i) / total;
-      effectiveStickersNeeded += 1 / probNew;
-    }
+    const effectiveStickersNeeded = calculateExpectedStickers(effectiveOwned, total);
     const packsWithTrading = Math.ceil(effectiveStickersNeeded / stickersPerPack);
     
     return {
@@ -86,7 +86,7 @@ export function CalculatorDialog({ stats }: CalculatorDialogProps) {
           {/* Price Input */}
           <div className="space-y-2">
             <Label htmlFor="pack-price" className="text-sm font-medium">
-              Precio por sobre (USD)
+              Precio por sobre (ARS)
             </Label>
             <div className="flex items-center gap-2">
               <DollarSign className="h-4 w-4 text-muted-foreground" />

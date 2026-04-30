@@ -84,7 +84,7 @@ export function StatsCards({ stats }: StatsCardsProps) {
             <span className="text-2xl sm:text-3xl font-bold tabular-nums text-foreground">
               ${stats.estimatedCost.toFixed(0)}
             </span>
-            <span className="text-xs sm:text-sm text-muted-foreground">USD</span>
+            <span className="text-xs sm:text-sm text-muted-foreground">ARS</span>
           </div>
           <p className="mt-0.5 sm:mt-1 text-[10px] sm:text-xs text-muted-foreground">
             ~{stats.estimatedPacksNeeded} sobres

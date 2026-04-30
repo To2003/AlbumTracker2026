@@ -48,18 +48,10 @@ export function TeamSelector({
     return result;
   }, [selectedGroup, search]);
   
-  // Calculate completion for a team
-  const getTeamCompletion = (team: Team): { owned: number; total: number } => {
-    const owned = team.stickers.filter(s => (collection[s.id] || 0) > 0).length;
-    return { owned, total: team.stickers.length };
-  };
-  
-  // Calculate completion for a section
-  const getSectionCompletion = (sectionId: string): { owned: number; total: number } => {
-    const section = specialSections.find(s => s.id === sectionId);
-    if (!section) return { owned: 0, total: 0 };
-    const owned = section.stickers.filter(s => (collection[s.id] || 0) > 0).length;
-    return { owned, total: section.stickers.length };
+  // Calculate completion for stickers
+  const getCompletion = (stickers: { id: string }[]): { owned: number; total: number } => {
+    const owned = stickers.filter(s => (collection[s.id] || 0) > 0).length;
+    return { owned, total: stickers.length };
   };
 
   return (
@@ -109,7 +101,7 @@ export function TeamSelector({
         </h3>
         <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
           {specialSections.map(section => {
-            const completion = getSectionCompletion(section.id);
+            const completion = getCompletion(section.stickers);
             const isComplete = completion.owned === completion.total;
             const isSelected = selectedSection === section.id;
             
@@ -124,7 +116,7 @@ export function TeamSelector({
                 onClick={() => onSelectSection(section.id)}
               >
                 <div className="flex flex-col items-start gap-0.5 sm:gap-1">
-                  <span className="font-medium text-[10px] sm:text-sm leading-tight">{section.name}</span>
+                  <span className="font-medium text-[10px] sm:text-sm leading-tight whitespace-normal text-left">{section.name}</span>
                   <Badge 
                     variant={isComplete ? 'default' : 'secondary'} 
                     className={cn(
@@ -149,7 +141,7 @@ export function TeamSelector({
         <ScrollArea className="h-[200px] sm:h-[280px]">
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-1.5 sm:gap-2 pr-3 sm:pr-4">
             {filteredTeams.map(team => {
-              const completion = getTeamCompletion(team);
+              const completion = getCompletion(team.stickers);
               const isComplete = completion.owned === completion.total;
               const isSelected = selectedTeam === team.id;
               

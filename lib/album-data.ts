@@ -801,7 +801,7 @@ export const ALBUM_CONFIG = {
   teamsCount: 48,
   stickersPerTeam: 20,
   stickersPerPack: 7,
-  packPrice: 1.50, // USD
+  packPrice: 1500, // ARS
   specialStickers: 36, // intro + stadiums + coca-cola
   parallelVariants: ['Blue', 'Red', 'Purple', 'Green', 'Black'],
 };
