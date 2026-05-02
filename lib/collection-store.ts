@@ -108,47 +108,45 @@ export function useCollection() {
     setIsLoaded(true);
   }, []);
   
-  // Save to localStorage when collection changes
-  useEffect(() => {
-    if (isLoaded) {
-      saveCollection(collection);
-    }
-  }, [collection, isLoaded]);
-  
   const getCount = useCallback((stickerId: string): number => {
     return collection[stickerId] || 0;
   }, [collection]);
   
   const setCount = useCallback((stickerId: string, count: number) => {
-    setCollection(prev => ({
-      ...prev,
-      [stickerId]: Math.max(0, count),
-    }));
+    setCollection(prev => {
+      const next = { ...prev, [stickerId]: Math.max(0, count) };
+      saveCollection(next);
+      return next;
+    });
   }, []);
   
   const increment = useCallback((stickerId: string) => {
-    setCollection(prev => ({
-      ...prev,
-      [stickerId]: (prev[stickerId] || 0) + 1,
-    }));
+    setCollection(prev => {
+      const next = { ...prev, [stickerId]: (prev[stickerId] || 0) + 1 };
+      saveCollection(next);
+      return next;
+    });
   }, []);
   
   const decrement = useCallback((stickerId: string) => {
-    setCollection(prev => ({
-      ...prev,
-      [stickerId]: Math.max(0, (prev[stickerId] || 0) - 1),
-    }));
+    setCollection(prev => {
+      const next = { ...prev, [stickerId]: Math.max(0, (prev[stickerId] || 0) - 1) };
+      saveCollection(next);
+      return next;
+    });
   }, []);
   
   const toggle = useCallback((stickerId: string) => {
-    setCollection(prev => ({
-      ...prev,
-      [stickerId]: prev[stickerId] ? 0 : 1,
-    }));
+    setCollection(prev => {
+      const next = { ...prev, [stickerId]: prev[stickerId] ? 0 : 1 };
+      saveCollection(next);
+      return next;
+    });
   }, []);
   
   const clearAll = useCallback(() => {
     setCollection({});
+    saveCollection({});
   }, []);
   
   const stats = calculateStats(collection);
