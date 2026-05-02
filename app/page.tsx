@@ -8,6 +8,7 @@ import { StickerGrid } from '@/components/sticker-grid';
 import { TradeListDialog } from '@/components/trade-list-dialog';
 import { CalculatorDialog } from '@/components/calculator-dialog';
 import { ClearCollectionDialog } from '@/components/clear-collection-dialog';
+import { SyncCollectionDialog } from '@/components/sync-collection-dialog';
 import { useCollection } from '@/lib/collection-store';
 import { Toaster } from '@/components/ui/sonner';
 import { Spinner } from '@/components/ui/spinner';
@@ -23,6 +24,7 @@ export default function Home() {
     decrement,
     toggle,
     clearAll,
+    importCollection,
     stats,
   } = useCollection();
   
@@ -58,6 +60,7 @@ export default function Home() {
         <section className="flex flex-wrap items-center gap-2 sm:gap-3">
           <TradeListDialog collection={collection} />
           <CalculatorDialog stats={stats} />
+          <SyncCollectionDialog collection={collection} onImport={importCollection} />
           <div className="flex-1" />
           <ClearCollectionDialog onClear={clearAll} />
         </section>

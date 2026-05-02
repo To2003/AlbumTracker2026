@@ -149,6 +149,24 @@ export function useCollection() {
     saveCollection({});
   }, []);
   
+  const importCollection = useCallback((newCollection: Record<string, number>, merge: boolean) => {
+    setCollection(prev => {
+      let next: Record<string, number>;
+      if (merge) {
+        next = { ...prev };
+        for (const [id, count] of Object.entries(newCollection)) {
+          if (typeof count === 'number' && count > 0) {
+            next[id] = Math.max(next[id] || 0, count);
+          }
+        }
+      } else {
+        next = { ...newCollection };
+      }
+      saveCollection(next);
+      return next;
+    });
+  }, []);
+  
   const stats = calculateStats(collection);
   
   return {
@@ -160,6 +178,7 @@ export function useCollection() {
     decrement,
     toggle,
     clearAll,
+    importCollection,
     stats,
   };
 }
