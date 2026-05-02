@@ -76,7 +76,7 @@ export function StatsCards({ stats }: StatsCardsProps) {
       <Card>
         <CardHeader className="pb-1 sm:pb-2 px-3 sm:px-6 pt-3 sm:pt-6">
           <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
-            Costo estimado
+            Costo mínimo estimado
           </CardTitle>
         </CardHeader>
         <CardContent className="px-3 sm:px-6 pb-3 sm:pb-6">
@@ -96,7 +96,7 @@ export function StatsCards({ stats }: StatsCardsProps) {
       <Card>
         <CardHeader className="pb-1 sm:pb-2 px-3 sm:px-6 pt-3 sm:pt-6">
           <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
-            Sobres necesarios
+            Mínimo de sobres
           </CardTitle>
         </CardHeader>
         <CardContent className="px-3 sm:px-6 pb-3 sm:pb-6">
@@ -107,7 +107,7 @@ export function StatsCards({ stats }: StatsCardsProps) {
             <span className="text-xs sm:text-sm text-muted-foreground">sobres</span>
           </div>
           <p className="mt-0.5 sm:mt-1 text-[10px] sm:text-xs text-muted-foreground">
-            {stats.estimatedPacksNeeded * ALBUM_CONFIG.stickersPerPack} figuritas
+            Asumiendo 0 repetidas (perfecta suerte)
           </p>
         </CardContent>
       </Card>

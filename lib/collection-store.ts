@@ -63,9 +63,8 @@ export function calculateStats(collection: Record<string, number>): CollectionSt
   const missing = total - owned;
   const completionPercentage = (owned / total) * 100;
   
-  // Estimate packs needed using probability (simplified model)
-  // As you collect more, probability of getting new stickers decreases
-  const estimatedPacksNeeded = estimatePacksNeeded(owned, total);
+  // Calculate minimum packs needed assuming no duplicates
+  const estimatedPacksNeeded = Math.ceil(missing / ALBUM_CONFIG.stickersPerPack);
   const estimatedCost = estimatedPacksNeeded * ALBUM_CONFIG.packPrice;
   
   return {
@@ -77,24 +76,6 @@ export function calculateStats(collection: Record<string, number>): CollectionSt
     estimatedCost,
     estimatedPacksNeeded,
   };
-}
-
-// Estimate packs needed to complete album using coupon collector problem
-function estimatePacksNeeded(currentOwned: number, total: number): number {
-  if (currentOwned >= total) return 0;
-  
-  const stickersPerPack = ALBUM_CONFIG.stickersPerPack;
-  let expectedStickers = 0;
-  
-  // For each remaining sticker, calculate expected stickers needed
-  for (let i = currentOwned; i < total; i++) {
-    // Probability of getting a new sticker
-    const probNew = (total - i) / total;
-    // Expected stickers to get one new
-    expectedStickers += 1 / probNew;
-  }
-  
-  return Math.ceil(expectedStickers / stickersPerPack);
 }
 
 // Custom hook for collection management
