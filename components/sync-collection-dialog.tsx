@@ -30,14 +30,16 @@ export function SyncCollectionDialog({ collection, onImport }: SyncCollectionDia
     try {
       // Only export stickers we actually have
       const activeStickers = Object.entries(collection)
-        .filter(([_, count]) => count > 0)
-        .reduce((acc, [id, count]) => {
-          acc[id] = count;
-          return acc;
-        }, {} as Record<string, number>);
+        .filter(([_, count]) => count > 0);
         
-      const json = JSON.stringify(activeStickers);
-      return btoa(json);
+      if (activeStickers.length === 0) return '';
+      
+      // Format: ID or ID:count (e.g. MEX1,MEX2:2,ARG1)
+      const compressed = activeStickers
+        .map(([id, count]) => count === 1 ? id : `${id}:${count}`)
+        .join(',');
+        
+      return btoa(compressed);
     } catch {
       return '';
     }
@@ -61,8 +63,22 @@ export function SyncCollectionDialog({ collection, onImport }: SyncCollectionDia
         return;
       }
       
-      const json = atob(importCode.trim());
-      const parsed = JSON.parse(json);
+      const decoded = atob(importCode.trim());
+      
+      let parsed: Record<string, number> = {};
+      
+      // Check if it's the old JSON format
+      if (decoded.trim().startsWith('{')) {
+        parsed = JSON.parse(decoded);
+      } else {
+        // Parse the compressed format
+        const parts = decoded.split(',');
+        for (const p of parts) {
+          if (!p) continue;
+          const [id, countStr] = p.split(':');
+          parsed[id] = countStr ? parseInt(countStr, 10) : 1;
+        }
+      }
       
       // Basic validation
       if (typeof parsed !== 'object' || parsed === null) {
@@ -117,7 +133,7 @@ export function SyncCollectionDialog({ collection, onImport }: SyncCollectionDia
               <Textarea 
                 readOnly 
                 value={generateExportCode()} 
-                className="font-mono text-xs h-32 resize-none bg-muted/50"
+                className="font-mono text-xs h-32 resize-none bg-muted/50 break-all"
               />
             </div>
             <Button onClick={handleCopy} className="w-full gap-2">
@@ -134,7 +150,7 @@ export function SyncCollectionDialog({ collection, onImport }: SyncCollectionDia
               placeholder="Pega el código aquí..." 
               value={importCode}
               onChange={(e) => setImportCode(e.target.value)}
-              className="font-mono text-xs h-32 resize-none"
+              className="font-mono text-xs h-32 resize-none break-all"
             />
             <div className="grid grid-cols-2 gap-2">
               <Button 
