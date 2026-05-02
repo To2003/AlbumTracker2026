@@ -756,6 +756,7 @@ export const ALBUM_CONFIG = {
   teamsCount: 48,
   stickersPerTeam: 20,       // 1 badge (foil) + 18 players + 1 team photo
   stickersPerPack: 7,
+  packPrice: 1500,           // ARS
   specialStickers: 20,       // 9 intro + 11 FIFA Museum
   cocaColaStickers: 12,      // exclusive, found in Coke bottles
   parallels: {

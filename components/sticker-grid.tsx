@@ -64,7 +64,7 @@ function StickerCard({
             hasSticker && "bg-primary text-primary-foreground"
           )}
         >
-          #{sticker.number}
+          #{sticker.stickerCode}
         </Badge>
         {hasDuplicates && (
           <Badge 
