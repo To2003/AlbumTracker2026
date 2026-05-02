@@ -185,12 +185,12 @@ export function useCollection() {
 
 // Generate trade list
 export function generateTradeList(collection: Record<string, number>): {
-  have: Array<{ stickerId: string; number: number; name: string; count: number }>;
-  need: Array<{ stickerId: string; number: number; name: string }>;
+  have: Array<{ stickerId: string; stickerCode: string; name: string; count: number }>;
+  need: Array<{ stickerId: string; stickerCode: string; name: string }>;
 } {
   const allStickers = getAllStickers();
-  const have: Array<{ stickerId: string; number: number; name: string; count: number }> = [];
-  const need: Array<{ stickerId: string; number: number; name: string }> = [];
+  const have: Array<{ stickerId: string; stickerCode: string; name: string; count: number }> = [];
+  const need: Array<{ stickerId: string; stickerCode: string; name: string }> = [];
   
   allStickers.forEach(sticker => {
     const count = collection[sticker.id] || 0;
@@ -198,22 +198,18 @@ export function generateTradeList(collection: Record<string, number>): {
     if (count === 0) {
       need.push({
         stickerId: sticker.id,
-        number: sticker.number,
+        stickerCode: sticker.stickerCode,
         name: sticker.name,
       });
     } else if (count > 1) {
       have.push({
         stickerId: sticker.id,
-        number: sticker.number,
+        stickerCode: sticker.stickerCode,
         name: sticker.name,
         count: count - 1, // Keep one, offer the rest
       });
     }
   });
-  
-  // Sort by sticker number
-  have.sort((a, b) => a.number - b.number);
-  need.sort((a, b) => a.number - b.number);
   
   return { have, need };
 }
@@ -229,7 +225,7 @@ export function formatTradeListAsText(collection: Record<string, number>): strin
     text += 'No tengo repetidas\n';
   } else {
     have.forEach(item => {
-      text += `#${item.number} - ${item.name} (x${item.count})\n`;
+      text += `#${item.stickerCode} - ${item.name} (x${item.count})\n`;
     });
   }
   
@@ -238,7 +234,7 @@ export function formatTradeListAsText(collection: Record<string, number>): strin
     text += 'Album completo!\n';
   } else {
     need.forEach(item => {
-      text += `#${item.number} - ${item.name}\n`;
+      text += `#${item.stickerCode} - ${item.name}\n`;
     });
   }
   

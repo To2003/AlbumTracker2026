@@ -99,7 +99,7 @@ export function TradeListDialog({ collection }: TradeListDialogProps) {
                     >
                       <div className="flex items-center gap-2 sm:gap-3 min-w-0">
                         <Badge variant="outline" className="font-mono text-xs shrink-0">
-                          #{item.number}
+                          #{item.stickerCode}
                         </Badge>
                         <span className="text-xs sm:text-sm truncate text-foreground">{item.name}</span>
                       </div>
@@ -127,7 +127,7 @@ export function TradeListDialog({ collection }: TradeListDialogProps) {
                       className="flex items-center gap-2 sm:gap-3 rounded-lg border p-2 sm:p-3"
                     >
                       <Badge variant="secondary" className="font-mono text-xs shrink-0">
-                        #{item.number}
+                        #{item.stickerCode}
                       </Badge>
                       <span className="text-xs sm:text-sm truncate text-muted-foreground">
                         {item.name}
