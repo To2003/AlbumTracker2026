@@ -26,6 +26,7 @@ export default function Home() {
     clearAll,
     importCollection,
     stats,
+    addPacks,
   } = useCollection();
   
   const handleSelectTeam = (teamId: string) => {
@@ -53,7 +54,10 @@ export default function Home() {
       <main className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6 max-w-7xl">
         {/* Stats Section */}
         <section>
-          <StatsCards stats={stats} />
+          <StatsCards 
+            stats={stats} 
+            onAddPacks={addPacks}
+          />
         </section>
         
         {/* Actions Bar */}

@@ -20,12 +20,14 @@ interface SyncCollectionDialogProps {
   onImport: (newCollection: Record<string, number>, merge: boolean) => void;
 }
 
+import LZString from 'lz-string';
+
 export function SyncCollectionDialog({ collection, onImport }: SyncCollectionDialogProps) {
   const [copied, setCopied] = useState(false);
   const [importCode, setImportCode] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   
-  // Generate a compressed base64 string from the collection
+  // Generate a compressed string from the collection
   const generateExportCode = () => {
     try {
       // Only export stickers we actually have
@@ -39,7 +41,7 @@ export function SyncCollectionDialog({ collection, onImport }: SyncCollectionDia
         .map(([id, count]) => count === 1 ? id : `${id}:${count}`)
         .join(',');
         
-      return btoa(compressed);
+      return LZString.compressToEncodedURIComponent(compressed);
     } catch {
       return '';
     }
@@ -63,7 +65,20 @@ export function SyncCollectionDialog({ collection, onImport }: SyncCollectionDia
         return;
       }
       
-      const decoded = atob(importCode.trim());
+      let decoded = LZString.decompressFromEncodedURIComponent(importCode.trim());
+      
+      // Fallback for old base64 format
+      if (!decoded) {
+        try {
+          decoded = atob(importCode.trim());
+        } catch {
+          throw new Error('Invalid format');
+        }
+      }
+      
+      if (!decoded) {
+        throw new Error('Invalid format');
+      }
       
       let parsed: Record<string, number> = {};
       
