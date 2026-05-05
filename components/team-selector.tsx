@@ -116,11 +116,11 @@ export function TeamSelector({
                 onClick={() => onSelectSection(section.id)}
               >
                 <div className="flex flex-col items-start gap-0.5 sm:gap-1">
-                  <span className="font-medium text-[10px] sm:text-sm leading-tight whitespace-normal text-left">{section.name}</span>
+                  <span className="font-medium text-[12px] sm:text-[15px] leading-tight whitespace-normal text-left">{section.name}</span>
                   <Badge 
                     variant={isComplete ? 'default' : 'secondary'} 
                     className={cn(
-                      "text-[9px] sm:text-xs px-1 sm:px-2",
+                      "text-[11px] sm:text-[13px] px-1 sm:px-2",
                       isComplete && "bg-primary text-primary-foreground"
                     )}
                   >
@@ -156,15 +156,15 @@ export function TeamSelector({
                   onClick={() => onSelectTeam(team.id)}
                 >
                   <div className="flex items-center gap-1.5 sm:gap-2 w-full">
-                    <span className="text-base sm:text-lg">{team.flag}</span>
-                    <span className="font-medium text-[11px] sm:text-sm truncate">{team.name}</span>
+                    <span className="text-lg sm:text-xl">{team.flag}</span>
+                    <span className="font-medium text-[13px] sm:text-[15px] truncate">{team.name}</span>
                   </div>
                   <div className="flex items-center justify-between w-full">
-                    <Badge variant="secondary" className="text-[9px] sm:text-xs px-1 sm:px-2">
+                    <Badge variant="secondary" className="text-[10px] sm:text-[13px] px-1 sm:px-2">
                       {team.group}
                     </Badge>
                     <span className={cn(
-                      "text-[10px] sm:text-xs tabular-nums",
+                      "text-[12px] sm:text-[14px] tabular-nums",
                       isComplete ? "text-primary font-medium" : "text-muted-foreground"
                     )}>
                       {completion.owned}/{completion.total}

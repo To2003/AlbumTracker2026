@@ -60,7 +60,7 @@ function StickerCard({
         <Badge 
           variant={hasSticker ? "default" : "secondary"} 
           className={cn(
-            "text-[10px] sm:text-xs font-mono px-1.5 sm:px-2",
+            "text-[12px] sm:text-[14px] font-mono px-1.5 sm:px-2",
             hasSticker && "bg-primary text-primary-foreground"
           )}
         >
@@ -68,7 +68,7 @@ function StickerCard({
         </Badge>
         {hasDuplicates && (
           <Badge 
-            className="text-[10px] sm:text-xs px-1.5 sm:px-2 bg-warning text-warning-foreground border-warning"
+            className="text-[12px] sm:text-[14px] px-1.5 sm:px-2 bg-warning text-warning-foreground border-warning"
           >
             x{count}
           </Badge>
@@ -85,12 +85,12 @@ function StickerCard({
         </div>
         <div className="flex-1 min-w-0">
           <p className={cn(
-            "text-xs sm:text-sm font-medium truncate",
+            "text-[13px] sm:text-base font-medium truncate",
             hasSticker ? "text-foreground" : "text-muted-foreground"
           )}>
             {sticker.name}
           </p>
-          <p className="text-[10px] sm:text-xs text-muted-foreground capitalize hidden sm:block">
+          <p className="text-[11px] sm:text-[13px] text-muted-foreground capitalize hidden sm:block">
             {sticker.type === 'team-photo' ? 'Foto Equipo' : sticker.type === 'badge' ? 'Escudo' : 'Jugador'}
           </p>
         </div>
@@ -113,7 +113,7 @@ function StickerCard({
         >
           <Minus className="h-3 w-3" />
         </Button>
-        <span className="text-xs sm:text-sm font-medium w-5 sm:w-6 text-center text-foreground">{count}</span>
+        <span className="text-[13px] sm:text-[15px] font-medium w-5 sm:w-6 text-center text-foreground">{count}</span>
         <Button
           variant="outline"
           size="icon"
