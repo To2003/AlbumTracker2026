@@ -21,6 +21,7 @@ interface SyncCollectionDialogProps {
 }
 
 import LZString from 'lz-string';
+import { getAllStickers } from '@/lib/album-data';
 
 export function SyncCollectionDialog({ collection, onImport }: SyncCollectionDialogProps) {
   const [copied, setCopied] = useState(false);
@@ -30,18 +31,22 @@ export function SyncCollectionDialog({ collection, onImport }: SyncCollectionDia
   // Generate a compressed string from the collection
   const generateExportCode = () => {
     try {
-      // Only export stickers we actually have
-      const activeStickers = Object.entries(collection)
-        .filter(([_, count]) => count > 0);
-        
-      if (activeStickers.length === 0) return '';
+      const allStickers = getAllStickers();
       
-      // Format: ID or ID:count (e.g. MEX1,MEX2:2,ARG1)
-      const compressed = activeStickers
-        .map(([id, count]) => count === 1 ? id : `${id}:${count}`)
-        .join(',');
-        
-      return LZString.compressToEncodedURIComponent(compressed);
+      // New format: positional string where each char is base36 representation of count
+      let str = allStickers.map(s => {
+        const count = collection[s.id] || 0;
+        return Math.min(35, count).toString(36);
+      }).join('');
+      
+      // Trim trailing zeros to save space
+      str = str.replace(/0+$/, '');
+      
+      if (!str) return '';
+      
+      // Add v2 header to distinguish from old format
+      const newFormat = `v2|${str}`;
+      return LZString.compressToEncodedURIComponent(newFormat);
     } catch {
       return '';
     }
@@ -82,11 +87,22 @@ export function SyncCollectionDialog({ collection, onImport }: SyncCollectionDia
       
       let parsed: Record<string, number> = {};
       
-      // Check if it's the old JSON format
-      if (decoded.trim().startsWith('{')) {
+      if (decoded.startsWith('v2|')) {
+        // Parse the new v2 format
+        const str = decoded.substring(3); // Remove 'v2|'
+        const allStickers = getAllStickers();
+        for (let i = 0; i < str.length; i++) {
+          if (i >= allStickers.length) break;
+          const count = parseInt(str[i], 36);
+          if (count > 0) {
+            parsed[allStickers[i].id] = count;
+          }
+        }
+      } else if (decoded.trim().startsWith('{')) {
+        // Check if it's the old JSON format
         parsed = JSON.parse(decoded);
       } else {
-        // Parse the compressed format
+        // Parse the old compressed format
         const parts = decoded.split(',');
         for (const p of parts) {
           if (!p) continue;
