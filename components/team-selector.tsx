@@ -63,7 +63,7 @@ export function TeamSelector({
           placeholder="Buscar equipo..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="pl-10 h-9 sm:h-10 text-sm"
+          className="pl-10 h-10 sm:h-11 text-[16px]"
         />
       </div>
       
@@ -73,7 +73,7 @@ export function TeamSelector({
           <Button
             variant={selectedGroup === null ? 'default' : 'outline'}
             size="sm"
-            className="h-7 sm:h-8 text-xs sm:text-sm px-2 sm:px-3"
+            className="h-9 sm:h-10 text-[16px] sm:text-base px-3 sm:px-4"
             onClick={() => setSelectedGroup(null)}
           >
             Todos
@@ -83,7 +83,7 @@ export function TeamSelector({
               key={group}
               variant={selectedGroup === group ? 'default' : 'outline'}
               size="sm"
-              className="h-7 sm:h-8 text-xs sm:text-sm px-2 sm:px-3"
+              className="h-9 sm:h-10 text-[16px] sm:text-base px-3 sm:px-4"
               onClick={() => setSelectedGroup(group)}
             >
               {group}
@@ -95,51 +95,54 @@ export function TeamSelector({
       
       {/* Special Sections */}
       <div className="space-y-2">
-        <h3 className="text-xs sm:text-sm font-medium text-muted-foreground flex items-center gap-2">
-          <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+        <h3 className="text-[16px] sm:text-base font-medium text-muted-foreground flex items-center gap-2">
+          <Sparkles className="h-4 w-4 sm:h-5 sm:w-5" />
           Secciones Especiales
         </h3>
-        <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
-          {specialSections.map(section => {
-            const completion = getCompletion(section.stickers);
-            const isComplete = completion.owned === completion.total;
-            const isSelected = selectedSection === section.id;
-            
-            return (
-              <Button
-                key={section.id}
-                variant={isSelected ? 'default' : 'outline'}
-                className={cn(
-                  "h-auto py-2 sm:py-3 px-2 sm:px-3 justify-start",
-                  isComplete && !isSelected && "border-primary/50 bg-primary/10"
-                )}
-                onClick={() => onSelectSection(section.id)}
-              >
-                <div className="flex flex-col items-start gap-0.5 sm:gap-1">
-                  <span className="font-medium text-[12px] sm:text-[15px] leading-tight whitespace-normal text-left">{section.name}</span>
-                  <Badge 
-                    variant={isComplete ? 'default' : 'secondary'} 
-                    className={cn(
-                      "text-[11px] sm:text-[13px] px-1 sm:px-2",
-                      isComplete && "bg-primary text-primary-foreground"
-                    )}
-                  >
-                    {completion.owned}/{completion.total}
-                  </Badge>
-                </div>
-              </Button>
-            );
-          })}
-        </div>
+        <ScrollArea className="w-full whitespace-nowrap">
+          <div className="flex gap-1.5 sm:gap-2 pb-2">
+            {specialSections.map(section => {
+              const completion = getCompletion(section.stickers);
+              const isComplete = completion.owned === completion.total;
+              const isSelected = selectedSection === section.id;
+              
+              return (
+                <Button
+                  key={section.id}
+                  variant={isSelected ? 'default' : 'outline'}
+                  className={cn(
+                    "h-auto py-2 sm:py-3 px-2 sm:px-3 justify-start shrink-0 min-w-[140px] sm:min-w-[180px]",
+                    isComplete && !isSelected && "border-primary/50 bg-primary/10"
+                  )}
+                  onClick={() => onSelectSection(section.id)}
+                >
+                  <div className="flex flex-col items-start gap-1 w-full">
+                    <span className="font-medium text-base sm:text-lg leading-tight truncate w-full text-left">{section.name}</span>
+                    <Badge 
+                      variant={isComplete ? 'default' : 'secondary'} 
+                      className={cn(
+                        "text-[16px] sm:text-base px-2",
+                        isComplete && "bg-primary text-primary-foreground"
+                      )}
+                    >
+                      {completion.owned}/{completion.total}
+                    </Badge>
+                  </div>
+                </Button>
+              );
+            })}
+          </div>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
       </div>
       
       {/* Teams Grid */}
       <div className="space-y-2">
-        <h3 className="text-xs sm:text-sm font-medium text-muted-foreground">
+        <h3 className="text-[16px] sm:text-base font-medium text-muted-foreground">
           Selecciones ({filteredTeams.length})
         </h3>
-        <ScrollArea className="h-[200px] sm:h-[280px]">
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-1.5 sm:gap-2 pr-3 sm:pr-4">
+        <ScrollArea className="w-full whitespace-nowrap">
+          <div className="flex gap-1.5 sm:gap-2 pb-2">
             {filteredTeams.map(team => {
               const completion = getCompletion(team.stickers);
               const isComplete = completion.owned === completion.total;
@@ -150,21 +153,21 @@ export function TeamSelector({
                   key={team.id}
                   variant={isSelected ? 'default' : 'outline'}
                   className={cn(
-                    "h-auto py-2 sm:py-3 px-2 sm:px-3 flex-col items-start gap-0.5 sm:gap-1",
+                    "h-auto py-2 sm:py-3 px-2 sm:px-3 flex-col items-start gap-0.5 sm:gap-1 shrink-0 min-w-[150px] sm:min-w-[180px]",
                     isComplete && !isSelected && "border-primary/50 bg-primary/10"
                   )}
                   onClick={() => onSelectTeam(team.id)}
                 >
                   <div className="flex items-center gap-1.5 sm:gap-2 w-full">
-                    <span className="text-lg sm:text-xl">{team.flag}</span>
-                    <span className="font-medium text-[13px] sm:text-[15px] truncate">{team.name}</span>
+                    <span className="text-xl sm:text-2xl">{team.flag}</span>
+                    <span className="font-medium text-[16px] sm:text-lg truncate">{team.name}</span>
                   </div>
-                  <div className="flex items-center justify-between w-full">
-                    <Badge variant="secondary" className="text-[10px] sm:text-[13px] px-1 sm:px-2">
+                  <div className="flex items-center justify-between w-full mt-1">
+                    <Badge variant="secondary" className="text-[16px] px-2">
                       {team.group}
                     </Badge>
                     <span className={cn(
-                      "text-[12px] sm:text-[14px] tabular-nums",
+                      "text-[16px] sm:text-lg tabular-nums",
                       isComplete ? "text-primary font-medium" : "text-muted-foreground"
                     )}>
                       {completion.owned}/{completion.total}
@@ -174,6 +177,7 @@ export function TeamSelector({
               );
             })}
           </div>
+          <ScrollBar orientation="horizontal" />
         </ScrollArea>
       </div>
     </div>

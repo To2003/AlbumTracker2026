@@ -128,9 +128,9 @@ export function SyncCollectionDialog({ collection, onImport }: SyncCollectionDia
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="gap-1.5 sm:gap-2 h-8 sm:h-9 text-xs sm:text-sm px-2.5 sm:px-4">
-          <RefreshCw className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-          <span className="hidden xs:inline">Sincronizar</span>
+        <Button variant="outline" className="gap-2 sm:gap-3 h-10 sm:h-11 text-[16px] sm:text-lg px-4 sm:px-6">
+          <RefreshCw className="h-4 w-4 sm:h-5 sm:w-5" />
+          <span>Sincronizar Datos</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-md w-[95vw] sm:w-full p-4 sm:p-6">
@@ -145,26 +145,26 @@ export function SyncCollectionDialog({ collection, onImport }: SyncCollectionDia
         </DialogHeader>
         
         <Tabs defaultValue="export" className="w-full mt-2">
-          <TabsList className="grid w-full grid-cols-2 h-9 sm:h-10">
-            <TabsTrigger value="export" className="gap-1 sm:gap-2 text-xs sm:text-sm px-2">
-              <Upload className="h-3 w-3 sm:h-4 sm:w-4" />
+          <TabsList className="grid w-full grid-cols-2 h-10 sm:h-12">
+            <TabsTrigger value="export" className="gap-1 sm:gap-2 text-[16px] sm:text-lg px-2">
+              <Upload className="h-4 w-4 sm:h-5 sm:w-5" />
               Exportar
             </TabsTrigger>
-            <TabsTrigger value="import" className="gap-1 sm:gap-2 text-xs sm:text-sm px-2">
-              <Download className="h-3 w-3 sm:h-4 sm:w-4" />
+            <TabsTrigger value="import" className="gap-1 sm:gap-2 text-[16px] sm:text-lg px-2">
+              <Download className="h-4 w-4 sm:h-5 sm:w-5" />
               Importar
             </TabsTrigger>
           </TabsList>
           
           <TabsContent value="export" className="space-y-4 pt-4">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-[16px] sm:text-lg text-muted-foreground">
               Copia este código y envíaselo a la persona con la que compartes el álbum.
             </p>
             <div className="relative">
               <Textarea 
                 readOnly 
                 value={generateExportCode()} 
-                className="font-mono text-xs h-32 resize-none bg-muted/50 break-all"
+                className="font-mono text-[16px] h-32 resize-none bg-muted/50 break-all"
               />
             </div>
             <Button onClick={handleCopy} className="w-full gap-2">
@@ -174,26 +174,26 @@ export function SyncCollectionDialog({ collection, onImport }: SyncCollectionDia
           </TabsContent>
           
           <TabsContent value="import" className="space-y-4 pt-4">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-[16px] sm:text-lg text-muted-foreground">
               Pega aquí el código que te compartieron para actualizar tu álbum.
             </p>
             <Textarea 
               placeholder="Pega el código aquí..." 
               value={importCode}
               onChange={(e) => setImportCode(e.target.value)}
-              className="font-mono text-xs h-32 resize-none break-all"
+              className="font-mono text-[16px] h-32 resize-none break-all"
             />
             <div className="grid grid-cols-2 gap-2">
               <Button 
                 variant="outline" 
                 onClick={() => handleImport(false)}
-                className="w-full text-xs"
+                className="w-full text-[16px]"
               >
                 Reemplazar todo
               </Button>
               <Button 
                 onClick={() => handleImport(true)}
-                className="w-full text-xs"
+                className="w-full text-[16px]"
               >
                 Combinar datos
               </Button>

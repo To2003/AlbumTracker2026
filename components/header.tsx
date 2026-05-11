@@ -15,8 +15,8 @@ export function Header() {
             <Trophy className="h-5 w-5 text-primary-foreground" />
           </div>
           <div>
-            <h1 className="text-lg font-bold leading-tight">Album Mundial 2026</h1>
-            <p className="text-xs text-muted-foreground">Tracker de Figuritas</p>
+            <h1 className="text-xl sm:text-2xl font-bold leading-tight">Album Mundial 2026</h1>
+            <p className="text-[16px] text-muted-foreground">Tracker de Figuritas</p>
           </div>
         </div>
         

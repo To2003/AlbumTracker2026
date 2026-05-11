@@ -40,9 +40,9 @@ export function TradeListDialog({ collection }: TradeListDialogProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className="gap-1.5 sm:gap-2 h-8 sm:h-9 text-xs sm:text-sm px-2.5 sm:px-4">
-          <ArrowLeftRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-          <span className="hidden xs:inline">Lista de</span> Intercambio
+        <Button variant="outline" className="gap-2 sm:gap-3 h-10 sm:h-11 text-[16px] sm:text-lg px-4 sm:px-6">
+          <ArrowLeftRight className="h-4 w-4 sm:h-5 sm:w-5" />
+          <span>Lista de Intercambio</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-2xl max-h-[85vh] w-[95vw] sm:w-full p-4 sm:p-6">
@@ -73,13 +73,13 @@ export function TradeListDialog({ collection }: TradeListDialogProps) {
         </div>
         
         <Tabs defaultValue="have" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 h-9 sm:h-10">
-            <TabsTrigger value="have" className="gap-1 sm:gap-2 text-xs sm:text-sm px-2">
-              <Package className="h-3 w-3 sm:h-4 sm:w-4" />
+          <TabsList className="grid w-full grid-cols-2 h-10 sm:h-12">
+            <TabsTrigger value="have" className="gap-1 sm:gap-2 text-[16px] sm:text-lg px-2">
+              <Package className="h-4 w-4 sm:h-5 sm:w-5" />
               Tengo ({have.length})
             </TabsTrigger>
-            <TabsTrigger value="need" className="gap-1 sm:gap-2 text-xs sm:text-sm px-2">
-              <Search className="h-3 w-3 sm:h-4 sm:w-4" />
+            <TabsTrigger value="need" className="gap-1 sm:gap-2 text-[16px] sm:text-lg px-2">
+              <Search className="h-4 w-4 sm:h-5 sm:w-5" />
               Necesito ({need.length})
             </TabsTrigger>
           </TabsList>
@@ -87,7 +87,7 @@ export function TradeListDialog({ collection }: TradeListDialogProps) {
           <TabsContent value="have">
             <ScrollArea className="h-[300px] sm:h-[400px] rounded-md border p-2 sm:p-4">
               {have.length === 0 ? (
-                <p className="text-center text-muted-foreground py-8 text-sm">
+                <p className="text-center text-muted-foreground py-8 text-[16px]">
                   No tenes figuritas repetidas para intercambiar
                 </p>
               ) : (
@@ -98,12 +98,12 @@ export function TradeListDialog({ collection }: TradeListDialogProps) {
                       className="flex items-center justify-between rounded-lg border bg-primary/5 border-primary/20 p-2 sm:p-3"
                     >
                       <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-                        <Badge variant="outline" className="font-mono text-xs shrink-0">
+                        <Badge variant="outline" className="font-mono text-[16px] shrink-0">
                           #{item.stickerCode}
                         </Badge>
-                        <span className="text-xs sm:text-sm truncate text-foreground">{item.name}</span>
+                        <span className="text-[16px] sm:text-lg truncate text-foreground">{item.name}</span>
                       </div>
-                      <Badge className="bg-warning text-warning-foreground shrink-0 ml-2">
+                      <Badge className="bg-warning text-warning-foreground shrink-0 ml-2 text-[16px]">
                         x{item.count}
                       </Badge>
                     </div>
@@ -116,7 +116,7 @@ export function TradeListDialog({ collection }: TradeListDialogProps) {
           <TabsContent value="need">
             <ScrollArea className="h-[300px] sm:h-[400px] rounded-md border p-2 sm:p-4">
               {need.length === 0 ? (
-                <p className="text-center text-muted-foreground py-8 text-sm">
+                <p className="text-center text-muted-foreground py-8 text-[16px]">
                   Album completo! No necesitas ninguna figurita
                 </p>
               ) : (
@@ -126,10 +126,10 @@ export function TradeListDialog({ collection }: TradeListDialogProps) {
                       key={item.stickerId}
                       className="flex items-center gap-2 sm:gap-3 rounded-lg border p-2 sm:p-3"
                     >
-                      <Badge variant="secondary" className="font-mono text-xs shrink-0">
+                      <Badge variant="secondary" className="font-mono text-[16px] shrink-0">
                         #{item.stickerCode}
                       </Badge>
-                      <span className="text-xs sm:text-sm truncate text-muted-foreground">
+                      <span className="text-[16px] sm:text-lg truncate text-muted-foreground">
                         {item.name}
                       </span>
                     </div>

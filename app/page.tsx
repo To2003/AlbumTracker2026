@@ -2,11 +2,10 @@
 
 import { useState } from 'react';
 import { Header } from '@/components/header';
-import { StatsCards } from '@/components/stats-cards';
+import { MainStatsCards, SecondaryStatsCards } from '@/components/stats-cards';
 import { TeamSelector } from '@/components/team-selector';
 import { StickerGrid } from '@/components/sticker-grid';
 import { TradeListDialog } from '@/components/trade-list-dialog';
-import { CalculatorDialog } from '@/components/calculator-dialog';
 import { ClearCollectionDialog } from '@/components/clear-collection-dialog';
 import { SyncCollectionDialog } from '@/components/sync-collection-dialog';
 import { useCollection } from '@/lib/collection-store';
@@ -52,27 +51,23 @@ export default function Home() {
       <Header />
       
       <main className="w-full max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-4 sm:space-y-6">
-        {/* Stats Section */}
+        {/* Main Stats Section */}
         <section>
-          <StatsCards 
-            stats={stats} 
-            onAddPacks={addPacks}
-          />
+          <MainStatsCards stats={stats} />
         </section>
         
         {/* Actions Bar */}
         <section className="flex flex-wrap items-center gap-2 sm:gap-3">
           <TradeListDialog collection={collection} />
-          <CalculatorDialog stats={stats} />
           <SyncCollectionDialog collection={collection} onImport={importCollection} />
           <div className="flex-1" />
           <ClearCollectionDialog onClear={clearAll} />
         </section>
         
-        {/* Main Content - Stack on mobile, side by side on desktop */}
-        <div className="flex flex-col lg:grid lg:grid-cols-[320px_1fr] gap-4 sm:gap-6">
+        {/* Main Content - Stack on mobile and desktop */}
+        <div className="flex flex-col gap-4 sm:gap-6">
           {/* Team Selector */}
-          <aside className="lg:sticky lg:top-4 lg:self-start">
+          <aside className="w-full">
             <div className="bg-card rounded-lg border p-3 sm:p-4">
               <TeamSelector
                 selectedTeam={selectedTeam}
@@ -96,6 +91,11 @@ export default function Home() {
             />
           </section>
         </div>
+
+        {/* Secondary Stats Section */}
+        <section>
+          <SecondaryStatsCards stats={stats} onAddPacks={addPacks} />
+        </section>
       </main>
       
       <Toaster />

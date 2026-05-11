@@ -16,14 +16,15 @@ interface StickerGridProps {
   onToggle: (stickerId: string) => void;
 }
 
-function getStickerIcon(type: Sticker['type']) {
+function getStickerIcon(type: Sticker['type'], className?: string) {
+  const iconClass = className || "h-5 w-5";
   switch (type) {
     case 'badge':
-      return <Shield className="h-4 w-4" />;
+      return <Shield className={iconClass} />;
     case 'team-photo':
-      return <Users className="h-4 w-4" />;
+      return <Users className={iconClass} />;
     case 'player':
-      return <User className="h-4 w-4" />;
+      return <User className={iconClass} />;
     default:
       return null;
   }
@@ -48,80 +49,95 @@ function StickerCard({
   return (
     <div
       className={cn(
-        "group relative rounded-lg border p-2 sm:p-3 transition-all cursor-pointer",
+        "group relative rounded-xl border p-2.5 sm:p-3 transition-all cursor-pointer flex flex-col h-full min-h-[220px]",
         hasSticker
-          ? "bg-primary/10 border-primary/50 dark:bg-primary/20"
+          ? "bg-primary/5 border-primary/40 dark:bg-primary/10 shadow-sm"
           : "bg-card border-border hover:border-primary/50 hover:bg-muted/50"
       )}
       onClick={onToggle}
     >
-      {/* Sticker Number */}
-      <div className="flex items-center justify-between mb-1.5 sm:mb-2">
+      {/* Top Header Row */}
+      <div className="flex items-start justify-between mb-2">
         <Badge 
           variant={hasSticker ? "default" : "secondary"} 
           className={cn(
-            "text-[12px] sm:text-[14px] font-mono px-1.5 sm:px-2",
-            hasSticker && "bg-primary text-primary-foreground"
+            "text-[16px] sm:text-lg font-mono px-2 py-0.5",
+            hasSticker && "bg-primary text-primary-foreground shadow-sm"
           )}
         >
           #{sticker.stickerCode}
         </Badge>
-        {hasDuplicates && (
-          <Badge 
-            className="text-[12px] sm:text-[14px] px-1.5 sm:px-2 bg-warning text-warning-foreground border-warning"
-          >
-            x{count}
-          </Badge>
-        )}
+        <div className="flex gap-1.5 items-center">
+          {hasDuplicates && (
+            <Badge 
+              className="text-[16px] sm:text-lg px-2 bg-warning text-warning-foreground border-warning shadow-sm"
+            >
+              x{count}
+            </Badge>
+          )}
+          {hasSticker && (
+            <div className="h-6 w-6 rounded-full bg-primary/20 flex items-center justify-center">
+              <Check className="h-4 w-4 text-primary" />
+            </div>
+          )}
+        </div>
+      </div>
+      
+      {/* Card Image Placeholder */}
+      <div className={cn(
+        "w-full aspect-[3/4] rounded-lg flex items-center justify-center mb-3 border-2 transition-all duration-300",
+        hasSticker 
+          ? "bg-gradient-to-br from-primary/20 to-primary/5 border-primary/30" 
+          : "bg-muted border-border/50 grayscale opacity-60"
+      )}>
+         <div className={cn(
+           "flex items-center justify-center rounded-full p-3 sm:p-4 transition-all duration-300",
+           hasSticker ? "bg-background/80 shadow-md text-primary" : "bg-background/40 text-muted-foreground"
+         )}>
+           {getStickerIcon(sticker.type, "h-8 w-8 sm:h-10 sm:w-10")}
+         </div>
       </div>
       
       {/* Sticker Info */}
-      <div className="flex items-start gap-1.5 sm:gap-2">
-        <div className={cn(
-          "flex-shrink-0 rounded-md p-1 sm:p-1.5",
-          hasSticker ? "bg-primary/20 text-primary" : "bg-muted text-muted-foreground"
-        )}>
-          {getStickerIcon(sticker.type)}
-        </div>
-        <div className="flex-1 min-w-0">
+      <div className="flex-1 flex flex-col items-center text-center justify-between gap-2">
+        <div className="flex flex-col items-center w-full">
           <p className={cn(
-            "text-[13px] sm:text-base font-medium truncate",
+            "text-[16px] sm:text-lg font-medium leading-tight line-clamp-2 w-full",
             hasSticker ? "text-foreground" : "text-muted-foreground"
-          )}>
+          )}
+          title={sticker.name}
+          >
             {sticker.name}
           </p>
-          <p className="text-[11px] sm:text-[13px] text-muted-foreground capitalize hidden sm:block">
+          <p className="text-[14px] sm:text-[16px] text-muted-foreground capitalize mt-0.5">
             {sticker.type === 'team-photo' ? 'Foto Equipo' : sticker.type === 'badge' ? 'Escudo' : 'Jugador'}
           </p>
         </div>
-        {hasSticker && (
-          <Check className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary flex-shrink-0" />
-        )}
-      </div>
-      
-      {/* Counter Controls - Always visible on mobile */}
-      <div 
-        className="flex items-center justify-center gap-1.5 sm:gap-2 mt-2 sm:mt-3 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <Button
-          variant="outline"
-          size="icon"
-          className="h-6 w-6 sm:h-7 sm:w-7"
-          onClick={onDecrement}
-          disabled={count === 0}
+        
+        {/* Counter Controls */}
+        <div 
+          className="flex items-center justify-center gap-2 mt-auto pt-2 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity w-full"
+          onClick={(e) => e.stopPropagation()}
         >
-          <Minus className="h-3 w-3" />
-        </Button>
-        <span className="text-[13px] sm:text-[15px] font-medium w-5 sm:w-6 text-center text-foreground">{count}</span>
-        <Button
-          variant="outline"
-          size="icon"
-          className="h-6 w-6 sm:h-7 sm:w-7"
-          onClick={onIncrement}
-        >
-          <Plus className="h-3 w-3" />
-        </Button>
+          <Button
+            variant={hasSticker ? "default" : "outline"}
+            size="icon"
+            className={cn("h-9 w-9 sm:h-10 sm:w-10 rounded-full", hasSticker ? "bg-primary/20 text-primary hover:bg-primary/30 border-none shadow-none" : "")}
+            onClick={onDecrement}
+            disabled={count === 0}
+          >
+            <Minus className="h-5 w-5" />
+          </Button>
+          <span className="text-[16px] sm:text-lg font-bold w-6 sm:w-8 text-center text-foreground">{count}</span>
+          <Button
+            variant={hasSticker ? "default" : "outline"}
+            size="icon"
+            className={cn("h-9 w-9 sm:h-10 sm:w-10 rounded-full", hasSticker ? "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm" : "")}
+            onClick={onIncrement}
+          >
+            <Plus className="h-5 w-5" />
+          </Button>
+        </div>
       </div>
     </div>
   );
@@ -160,7 +176,7 @@ export function StickerGrid({
     return (
       <Card>
         <CardContent className="py-12 text-center">
-          <p className="text-muted-foreground">
+          <p className="text-[16px] sm:text-lg text-muted-foreground">
             Selecciona un equipo o seccion para ver sus figuritas
           </p>
         </CardContent>
@@ -177,15 +193,15 @@ export function StickerGrid({
       <CardHeader className="pb-2 sm:pb-3">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div>
-            <CardTitle className="text-lg sm:text-xl">{title}</CardTitle>
-            <p className="text-xs sm:text-sm text-muted-foreground">{subtitle}</p>
+            <CardTitle className="text-xl sm:text-2xl">{title}</CardTitle>
+            <p className="text-[16px] sm:text-base text-muted-foreground">{subtitle}</p>
           </div>
           <div className="flex sm:flex-col items-center sm:items-end gap-2 sm:gap-0">
             <p className="text-xl sm:text-2xl font-bold tabular-nums text-foreground">
               {ownedCount}/{totalCount}
             </p>
             <p className={cn(
-              "text-xs sm:text-sm font-medium",
+              "text-[16px] sm:text-base font-medium",
               completionPercent === 100 ? "text-primary" : "text-muted-foreground"
             )}>
               {completionPercent.toFixed(0)}% completo
